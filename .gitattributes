@@ -1,0 +1,15 @@
+# 统一换行符，避免在不同系统上 checkout 后文件格式被破坏
+* text=auto
+
+# 批处理必须是 CRLF：cmd.exe 按字节偏移逐行读取 .bat，
+# LF-only 的文件会让它读串行并抛出一堆 "'xxx' is not recognized"。
+*.bat text eol=crlf
+
+# PowerShell 脚本也用 CRLF，避免中文注释在部分环境下乱码
+*.ps1 text eol=crlf
+
+# 二进制文件不做换行符转换
+*.ico binary
+*.dll binary
+*.png binary
+*.zip binary

@@ -1,0 +1,71 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AssemblyName>XiaoheiheFloat</AssemblyName>
+    <RootNamespace>XiaoheiheFloat</RootNamespace>
+    <Platforms>x64</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+    <SatelliteResourceLanguages>zh-Hans</SatelliteResourceLanguages>
+
+    <!-- 版本与产品信息：写明来源后，杀软/SmartScreen 的启发式评分会低一些 -->
+    <Version>1.5.7</Version>
+    <FileVersion>1.5.7.0</FileVersion>
+    <AssemblyVersion>1.5.7.0</AssemblyVersion>
+    <Product>小黑盒悬浮窗</Product>
+    <AssemblyTitle>小黑盒悬浮窗</AssemblyTitle>
+    <Description>用 WinForms + Microsoft Edge WebView2 实现的桌面悬浮窗，直接显示小黑盒社区网页。纯本地程序，不收集任何数据，除小黑盒站点外不访问任何网络地址。</Description>
+    <Company>XiaoheiheFloat</Company>
+    <Copyright>Copyright (C) 2026 XiaoheiheFloat</Copyright>
+    <NeutralLanguage>zh-Hans</NeutralLanguage>
+
+    <!-- 可复现构建：同样源码产出同样二进制 -->
+    <Deterministic>true</Deterministic>
+    <!-- 不要把 git commit 号写进程序集版本信息：否则每次提交后重新编译，
+         二进制哈希都会变，README 里公布的哈希就对不上了 -->
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+
+    <!-- WebView2Loader.dll is a native binary referenced only for copy-to-output; its PE image has no .NET metadata. -->
+    <NoWarn>$(NoWarn);MSB3246;MSB3277;NU1701;CS0618</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Web.WebView2.Core">
+      <HintPath>lib\Microsoft.Web.WebView2.Core.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebView2.WinForms">
+      <HintPath>lib\Microsoft.Web.WebView2.WinForms.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!--
+    WebView2Loader.dll 是原生 DLL，没有 .NET 元数据。
+    用 <Reference> 声明它时 MSBuild 会解析但不复制到输出目录（"与预期名称不匹配"），
+    所以这里显式拷贝，保证 bin 目录里一定有它——没有它 WebView2 起不来。
+  -->
+  <Target Name="CopyWebView2Loader" AfterTargets="Build" Condition="'$(DesignTimeBuild)' != 'true'">
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\lib\WebView2Loader.dll"
+          DestinationFolder="$(OutDir)"
+          SkipUnchangedFiles="true"
+          Condition="Exists('$(MSBuildProjectDirectory)\lib\WebView2Loader.dll')" />
+  </Target>
+
+</Project>
+
+
+
+
+
+
+
+
+

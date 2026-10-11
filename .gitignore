@@ -1,0 +1,26 @@
+# 构建产物
+bin/
+obj/
+
+# Visual Studio 本地缓存
+.vs/
+*.user
+*.suo
+
+# 运行期生成的数据 / 日志
+WebView2Data/
+Config/
+diag.log
+crash.log
+unblock-test.log
+icon.ico
+
+# 打包 / 备份产物（可重新生成）
+dist/
+backup/
+*.zip
+
+# 自检截图与临时日志
+_verify/
+*.png
+*.log
